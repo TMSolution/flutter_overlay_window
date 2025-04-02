@@ -64,6 +64,8 @@ public class FlutterOverlayWindowPlugin implements
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 intent.setData(Uri.parse("package:" + mActivity.getPackageName()));
+                mActivity.setShowWhenLocked(true);
+                mActivity.setTurnScreenOn(true);   
                 mActivity.startActivityForResult(intent, REQUEST_CODE_FOR_OVERLAY_PERMISSION);
             } else {
                 result.success(true);
@@ -73,6 +75,9 @@ public class FlutterOverlayWindowPlugin implements
                 result.error("PERMISSION", "overlay permission is not enabled", null);
                 return;
             }
+
+            if (OverlayService.isRunning) return;
+
             Integer height = call.argument("height");
             Integer width = call.argument("width");
             String alignment = call.argument("alignment");
