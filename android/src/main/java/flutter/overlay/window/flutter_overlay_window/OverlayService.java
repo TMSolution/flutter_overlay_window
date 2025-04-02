@@ -53,8 +53,8 @@ public class OverlayService extends Service implements View.OnTouchListener {
     private Resources mResources;
 
     public static boolean isRunning = false;
-    private WindowManager windowManager = null;
-    private FlutterView flutterView;
+    public WindowManager windowManager = null;
+    public FlutterView flutterView;
     private MethodChannel flutterChannel = null;
     private BasicMessageChannel<Object> overlayMessageChannel = null;
     private int clickableFlag = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
@@ -85,9 +85,9 @@ public class OverlayService extends Service implements View.OnTouchListener {
             flutterView.detachFromFlutterEngine();
             flutterView = null;
         }
+        isRunning = false;
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(OverlayConstants.NOTIFICATION_ID);
-        isRunning = false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
