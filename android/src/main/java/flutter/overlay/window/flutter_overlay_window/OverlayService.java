@@ -23,7 +23,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-
+import android.content.pm.ServiceInfo;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -264,7 +264,16 @@ public class OverlayService extends Service implements View.OnTouchListener {
                 .setVisibility(WindowSetup.notificationVisibility)
                 .addAction(0, WindowSetup.stopServiceActionTitle, closeOverlayPendingIntent)
                 .build();
-        startForeground(OverlayConstants.NOTIFICATION_ID, notification);
+        if (Build.VERSION.SDK_INT >= 34) {
+            startForeground(
+                    OverlayConstants.NOTIFICATION_ID,
+                    notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+        } else {
+            startForeground(
+                    OverlayConstants.NOTIFICATION_ID,
+                    notification);
+        }
     }
 
     private void createNotificationChannel() {
